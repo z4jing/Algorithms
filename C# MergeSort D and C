@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+namespace Rextester
+{
+    public class Program
+    {
+        static int[] Getarray(int[] arr, int low, int high) {
+            var result = new int[high-low+1]; 
+            for (int i = low; i <= high; ++i) {
+                result[i-low] = arr[i];
+            }
+            return result;
+        }
+        
+        static int[] Merge(int[] a, int[] b) {
+            var result = new int[a.Length + b.Length];
+            int i = 0; int j = 0;
+            for (int k = 0; k < a.Length + b.Length; ++k) {
+                if (i >= a.Length) {
+                    result[k] = b[j];
+                    ++j;
+                }
+                else if (j >= a.Length){
+                    result[k] = a[i];
+                    ++i;
+                }
+                else {
+                    if (a[i] <= b[j]) {
+                        result[k] = a[i];
+                        ++i;
+                    }
+                    else {
+                        result[k] = b[j];
+                        ++j;
+                    }
+                }
+            }
+            return result;
+        }
+        
+        static int[]  Mergesort(int[] arr) {
+            if (arr.Length == 1) {
+                return arr;
+            }
+            else {
+                int mid = arr.Length/2 -1;
+                return Merge(Mergesort(Getarray(arr,0,mid)), Mergesort(Getarray(arr,mid+1,arr.Length-1)));
+            }
+        }
+                    
+        public static void Main(string[] args)
+        {
+            int[] a = {1,2,3,4};
+            int[] b = {3,4,6,7};
+            int[] c = {3,4,6,1,7,2,4,3};
+            foreach (int i in Mergesort(c)) {
+                Console.WriteLine(i);
+            }
+        }
+    }
+}
