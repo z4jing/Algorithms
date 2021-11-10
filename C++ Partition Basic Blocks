@@ -1,30 +1,34 @@
-// Online C++ compiler to run C++ program online
 #include <iostream>
 #include <vector>
 #include <algorithm>
 
 using namespace std;
 
-struct Instruction {
+class Instruction {
+    // definition here;
+    public:
+    /* isLeader() should return true if the Instruction is a leader of a basic block. i.e. whenever the instruction is the first three address code or is a jump target or immediately follows a jump;*/
     bool isLeader();
 };
 
 class BasicBlock {
+    /* here we can also choose other data structures like linked list as what I used to, but vector might be more clear and easy to implement.*/
     vector<Instruction> content;
     
     public:
+    // Constructor;
     BasicBlock(vector<Instruction> v) : content{v} {}
 };
 
 vector<BasicBlock> PartitionBasicBlocks(vector<Instruction> Insts) {
-    //storing index of Leaders; isLeader() is true whenever the instruction is the first three address code or is a jump target or immediately follows a jump;
+    //storing indices of Leaders in Insts;
     vector<int> LeaderIndex;
     for (int i = 0; i < Insts.size(); ++i) {
         if (Insts[i].isLeader()) {
             LeaderIndex.push_back(i);
         }
     }
-    //grouping all instructions in Insts between each two Leader index as a basic block;
+    /*Between each tow indices in LeaderIndex we group all instructions (including Leader but excluding second Leader) as a basic block;*/
     vector<BasicBlock> result;
     for (int i = 0; i < LeaderIndex.size(); ++i) {
         vector<Instruction> tem;
@@ -38,6 +42,6 @@ vector<BasicBlock> PartitionBasicBlocks(vector<Instruction> Insts) {
 
 int main() {
     // Write test here
-
+    
     return 0;
 }
