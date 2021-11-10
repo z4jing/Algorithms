@@ -1,0 +1,43 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+struct Instruction {
+    bool isLeader();
+};
+
+class BasicBlock {
+    vector<Instruction> content;
+    
+    public:
+    BasicBlock(vector<Instruction> v) : content{v} {}
+};
+
+vector<BasicBlock> PartitionBasicBlocks(vector<Instruction> Insts) {
+    //storing index of Leaders; isLeader() is true whenever the instruction is the first three address code or is a jump target or immediately follows a jump;
+    vector<int> LeaderIndex;
+    for (int i = 0; i < Insts.size(); ++i) {
+        if (Insts[i].isLeader()) {
+            LeaderIndex.push_back(i);
+        }
+    }
+    //grouping all instructions in Insts between each two Leader index as a basic block;
+    vector<BasicBlock> result;
+    for (int i = 0; i < LeaderIndex.size(); ++i) {
+        vector<Instruction> tem;
+        for (int j = LeaderIndex[i]; j < LeaderIndex[i+1]; ++j) {
+            tem.push_back(Insts[j]);
+        }
+        result.emplace_back(tem);
+    }
+    return result;
+}
+
+int main() {
+    // Write test here
+
+    return 0;
+}
